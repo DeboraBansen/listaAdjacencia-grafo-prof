@@ -19,7 +19,7 @@ class Vertex:
     def get_weight(self, neighbor):
         return self.adjacent[neighbor]
 
-
+cc={}#variável global de componentes conexos
 
 class Graph:
     def __init__(self):
@@ -80,8 +80,34 @@ class Graph:
           if(j.explored==0):
             
             Queue=[j.get_id()]+Queue
-        
-   
+
+ #Componentes conexos busca bfs
+    def ccBfs(self):
+      id=0
+      for v in self.vert_dict:
+        cc[v]=-1
+      for v in self.vert_dict:
+        if cc[v]==-1:
+          id=id+1
+          self.BFS(v,id) 
+    
+    def BFS(self,s,id):
+      for i in self.vert_dict:
+        self.vert_dict[i].explored = 0
+      self.vert_dict[s].explored = 1
+      cc[s]=id
+      Queue = []
+      Queue.append(s)
+      while(len(Queue)>0):
+        w = Queue.pop(0)
+        for j in self.vert_dict[w].get_connections():
+          if(j.explored==0):
+            j.explored=1
+            cc[j.get_id()]=id
+            Queue.append(j.get_id())
+  #---------------------------------------------------          
+    
+
 if __name__ == '__main__':
 
     g = Graph()
@@ -112,4 +138,10 @@ if __name__ == '__main__':
     for v in g:
         print ('g.vert_dict[%s]=%s' %(v.get_id(), g.vert_dict[v.get_id()]))
 
-    g.dfs('a')
+    g.ccBfs()
+    print('\nComponentes Conexos:')
+    for i in cc:
+      print('vertice[%s]=%d'%(i,cc[i]))
+      
+
+    
