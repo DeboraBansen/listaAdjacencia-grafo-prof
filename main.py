@@ -105,7 +105,46 @@ class Graph:
             j.explored=1
             cc[j.get_id()]=id
             Queue.append(j.get_id())
-  #---------------------------------------------------          
+  #---------------------------------------------------        
+    def dijkstra(self,a ,b):
+      for i in self.vert_dict:
+        self.vert_dict[i].explored = 0
+      self.vert_dict[a].explored = 1
+      custo=500
+      lista=[]
+      Queue = []
+      Queue.append(a)
+      while(len(Queue)>0):
+        w = Queue.pop(0)
+        print(w)
+        self.vert_dict[w].explored = 1
+        custo=500
+        for j in self.vert_dict[w].get_connections():
+          if(j.get_id()!=b):
+            #print(j.get_id())
+            if(j.explored==0):
+              
+              if(self.vert_dict[w].get_weight(j)<custo):
+                
+                custo=self.vert_dict[w].get_weight(j)
+                #print(custo)
+
+                if(len(Queue)>0):
+                  Queue.pop(0)
+                  Queue.append(j.get_id())  
+                else:  
+                  Queue.append(j.get_id()) 
+          else:
+            if(len(Queue)>0):
+              Queue.pop(0)
+            break        
+      print(b)
+      #lista.append(b)       
+      #if i in lista:
+       # print(i)
+        
+
+
     
 
 if __name__ == '__main__':
@@ -138,10 +177,12 @@ if __name__ == '__main__':
     for v in g:
         print ('g.vert_dict[%s]=%s' %(v.get_id(), g.vert_dict[v.get_id()]))
 
-    g.ccBfs()
+    '''g.ccBfs()
     print('\nComponentes Conexos:')
     for i in cc:
-      print('vertice[%s]=%d'%(i,cc[i]))
+      print('vertice[%s]=%d'%(i,cc[i]))'''
+
+    #g.dijkstra('e','a')  
       
 
     
