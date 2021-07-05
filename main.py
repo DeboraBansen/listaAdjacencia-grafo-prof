@@ -1,3 +1,4 @@
+import math
 class Vertex:
     def __init__(self, node):
         self.id = node
@@ -109,26 +110,18 @@ class Graph:
     def dijkstra(self,a ,b):
       for i in self.vert_dict:
         self.vert_dict[i].explored = 0
-      self.vert_dict[a].explored = 1
-      custo=500
-      lista=[]
       Queue = []
       Queue.append(a)
       while(len(Queue)>0):
         w = Queue.pop(0)
         print(w)
         self.vert_dict[w].explored = 1
-        custo=500
+        custo=math.inf
         for j in self.vert_dict[w].get_connections():
           if(j.get_id()!=b):
-            #print(j.get_id())
             if(j.explored==0):
-              
               if(self.vert_dict[w].get_weight(j)<custo):
-                
                 custo=self.vert_dict[w].get_weight(j)
-                #print(custo)
-
                 if(len(Queue)>0):
                   Queue.pop(0)
                   Queue.append(j.get_id())  
@@ -139,9 +132,23 @@ class Graph:
               Queue.pop(0)
             break        
       print(b)
-      #lista.append(b)       
-      #if i in lista:
-       # print(i)
+  #---------------------------------------------------
+  #--------belmman ford
+    
+    def belmman_ford(self,s):
+      d={}
+      for v in self.vert_dict:
+        d[v]=float("inf")
+      d[s]=0
+
+      for _ in range(len(self.vert_dict) - 1):
+        for u in self.vert_dict:
+            for j in self.vert_dict[u].get_connections():
+              if d[u]!=float("inf") and d[u]+self.vert_dict[u].get_weight(j)<d[j.get_id()]:
+                d[j.get_id()]=d[u]+self.vert_dict[u].get_weight(j)  
+      
+      return d
+      
         
 
 
@@ -183,6 +190,8 @@ if __name__ == '__main__':
       print('vertice[%s]=%d'%(i,cc[i]))'''
 
     #g.dijkstra('e','a')  
-      
+    d=g.belmman_ford('a') 
+    for i in d:
+      print('vertice[%s]=%s'%(i,d[i]))  
 
     
